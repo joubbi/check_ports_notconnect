@@ -11,13 +11,14 @@
 # information will be available even if the switch is rebooted.                          #
 #                                                                                        #
 # USAGE:                                                                                 #
+# Edit the "snmpwalk" and "tempdir" variables in this script below.                      #
 # Add this script as a service check in Op5/Nagios/Icinga... for a Cisco device.         #
 # Apply the SNMP authentication information as variables to the service.                 #
 #                                                                                        #
 # Version history:                                                                       #
 # 1.0 2016-06-15  Initial version.                                                       #
 #                                                                                        #
-#                                                                                        #
+# Licensed under the Apache license version 2.0                                          #
 # Written by Farid.Joubbi@consign.se                                                     #
 #                                                                                        #
 ##########################################################################################
