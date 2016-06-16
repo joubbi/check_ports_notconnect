@@ -24,6 +24,11 @@ Apply the SNMP authentication information as variables to the service.
 If you have a setup with several monitoring peers, it might be usable to rsync the "tempdir" from crontab every now and then
 so that the latest information about the switches is available to all the peers.
 
+## Compability
+I have tested this script with Cisco Catalyst 2960G, 2960-S, 2960-X and 3750G.
+It should however work with other models and brands.
+Let me know if you have a switch that supports SNMP and works or doesn't with this plugin.
+
 Licensed under the Apache license version 2.0
 Written by farid.joubbi@consign.se
 
