@@ -16,7 +16,7 @@
 # Apply the SNMP authentication information as variables to the service.                 #
 #                                                                                        #
 # Version history:                                                                       #
-# 1.0 2016-06-15  Initial version.                                                       #
+# 1.0 2016-06-16  Initial version.                                                       #
 #                                                                                        #
 # Licensed under the Apache license version 2.0                                          #
 # Written by Farid.Joubbi@consign.se                                                     #
@@ -55,13 +55,13 @@ fi
 
 
 # Rread and store interface entries, exit on error.
-$snmpwalk $snmpopt 1.3.6.1.2.1.2.2.1.1 > $snmp_file
+$snmpwalk $snmpopt 1.3.6.1.2.1.2.2.1.1 > "$snmp_file"
 if [ "$?" != 0 ]; then
   echo "Something went wrong communicating with the SNMP agent on "$1"!"
   exit 3
 fi
-$snmpwalk $snmpopt 1.3.6.1.2.1.2.2.1.2 >> $snmp_file 2>/dev/null
-$snmpwalk $snmpopt 1.3.6.1.2.1.2.2.1.8 >> $snmp_file 2>/dev/null
+$snmpwalk $snmpopt 1.3.6.1.2.1.2.2.1.2 >> "$snmp_file" 2>/dev/null
+$snmpwalk $snmpopt 1.3.6.1.2.1.2.2.1.8 >> "$snmp_file" 2>/dev/null
 
 # The file does not exist the first run. Create it.
 if [ ! -f "$interface_file" ]; then
@@ -74,14 +74,14 @@ fi
 
 
 # Get interface indexes.
-indexes=$(sed -n -e "s/.1.3.6.1.2.1.2.2.1.1.\([0-9]\+\).*/\1/p" $snmp_file)
+indexes=$(sed -n -e "s/.1.3.6.1.2.1.2.2.1.1.\([0-9]\+\).*/\1/p" "$snmp_file")
 
 # Get the name and operational status of the interfaces, store interfaces that are down with the oldest timestamp.
-for index in $indexes; do
-  ifDescr=$(sed -n -e "s/.1.3.6.1.2.1.2.2.1.2.${index} = .*: \(.*\)/\1/p" $snmp_file | tr -d \")
-  ifOperStatus=$(sed -n -e "s/.1.3.6.1.2.1.2.2.1.8.${index} = .*: \(.*\)/\1/p" $snmp_file)
+for index in "$indexes"; do
+  ifDescr=$(sed -n -e "s/.1.3.6.1.2.1.2.2.1.2.${index} = .*: \(.*\)/\1/p" "$snmp_file" | tr -d \")
+  ifOperStatus=$(sed -n -e "s/.1.3.6.1.2.1.2.2.1.8.${index} = .*: \(.*\)/\1/p" "$snmp_file")
   if [[ "$ifOperStatus" == *"down"* && "$ifDescr" != *"Stack"* && "$ifDescr" != *"Vlan"* ]]; then
-    grep "$ifDescr " "$interface_file" >> "$interface_file"-latest    # Note the space after ifDescr so that it does no match GigabitEthernet1/0/1 on GigabitEthernet1/0/10
+    grep -w "$ifDescr" "$interface_file" >> "$interface_file"-latest
     if [ $? != 0 ]; then
       printf "%s!%s\n" "$ifDescr" "$datestamp" >> "$interface_file"-latest
     fi
@@ -90,13 +90,13 @@ done
 
 
 # remove temporary files
-unlink $snmp_file
+unlink "$snmp_file"
 mv "$interface_file"-latest "$interface_file"
 
 notconnected_interfaces=`wc -l < "$interface_file"`
 
 # Print the contents of the gathered data in preferred format
-printf "%s %s %s %s %s\n" $notconnected_interfaces 'interfaces not connected' `date -d @"$datestamp" +'%Y-%m-%d %H:%M:%S'` "| 'Not connected interfaces'=$notconnected_interfaces"
+printf "%s %s %s %s %s\n" "$notconnected_interfaces" 'interfaces not connected' `date -d @"$datestamp" +'%Y-%m-%d %H:%M:%S'` "| 'Not connected interfaces'="$notconnected_interfaces""
 while read LINE; do
   printf "%s\t%s %s\n" `echo "$LINE" | cut -d! -f1` $(( ($datestamp - `echo "$LINE" | cut -d! -f2`) / 86400 )) 'days' 
 done < "$interface_file"
