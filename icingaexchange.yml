@@ -1,0 +1,20 @@
+
+name: check_ports_notconnect
+description: "file:///README.md"
+url: "https://gitlab.com/faridj/check_ports_notconnect.git"
+tags: switch
+vendor: Cisco
+target: Network
+type: Plugin
+license: Apache v2
+releases: 
+  - 
+    name: 1.0
+    description: "1.0 Release"
+    files: 
+      - 
+        name: check_ports_notconnect.sh
+        url: "file:///check_ports_notconnect.sh"
+        description: "First public release"
+        checksum: 329ef866f668dd1ac9c9aa1bc1806fd0
+
