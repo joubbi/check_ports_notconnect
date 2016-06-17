@@ -21,6 +21,18 @@ Also make sure that the variable "snmpwalk" points to snmpbulkwalk.
 Add this script as a service check for a switch in Op5 Monitor/Nagios/Icinga or whichever compatible monitoring system is your choice.
 Apply the SNMP authentication information as variables to the service.
 
+Define the command for example like this for SNMPv3:
+```sh
+check_ports_notconnect.sh $HOSTADDRESS$ username SHA $ARG1$ AES $ARG2$
+```
+
+and for SNMPv2c:
+```sh
+check_ports_notconnect.sh $HOSTADDRESS$ $ARG1$
+```
+Where ARG1 is the community string.
+
+
 In case you have a setup with several monitoring peers, it might be usable to rsync the "tempdir" from crontab every now and then
 so that the latest information about the switches is available to all the peers.
 
