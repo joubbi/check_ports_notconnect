@@ -3,7 +3,8 @@
 This is a script that presents information about unused (notconnect according to "show interface status" on Cisco switches) ports on (Cisco and probably other) switches.
 The script outputs how many unused ports there are right now,
 and the names of the ports with the amount of days they have been "down".
-The output is almost the same as the output from "sh interfaces status | include not" but with the number of days.
+If the switch is a Cisco and the not connected port is configured with a VLAN number, the VLAN number is also printed.
+The output is almost the same as the output from "sh interfaces status | include not" but with the number of days and VLAN.
 The number of unused ports is also sent as performance data so that it can be graphed.
 
 The script saves the names of all the not connected ports with a timestamp so that the

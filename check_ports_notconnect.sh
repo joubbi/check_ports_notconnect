@@ -16,7 +16,8 @@
 # Apply the SNMP authentication information as variables to the service.                 #
 #                                                                                        #
 # Version history:                                                                       #
-# 1.1 2016-07-15  Fixed a critical bug.
+# 1.2 2016-07-15  Added information about the VLAN on the not connected interface.       #
+# 1.1 2016-07-15  Fixed a critical bug.                                                  #
 # 1.0 2016-06-16  Initial version.                                                       #
 #                                                                                        #
 # Licensed under the Apache license version 2.0                                          #
@@ -63,6 +64,7 @@ if [ "$?" != 0 ]; then
 fi
 $snmpwalk $snmpopt 1.3.6.1.2.1.2.2.1.2 >> "$snmp_file" 2>/dev/null
 $snmpwalk $snmpopt 1.3.6.1.2.1.2.2.1.8 >> "$snmp_file" 2>/dev/null
+$snmpwalk $snmpopt .1.3.6.1.4.1.9.9.68.1.2.2.1.2 >> "$snmp_file" 2>/dev/null
 
 # The file does not exist the first run. Create it.
 if [ ! -f "$interface_file" ]; then
@@ -81,10 +83,11 @@ indexes=$(sed -n -e "s/.1.3.6.1.2.1.2.2.1.1.\([0-9]\+\).*/\1/p" "$snmp_file")
 for index in $indexes; do
   ifDescr=$(sed -n -e "s/.1.3.6.1.2.1.2.2.1.2.${index} = .*: \(.*\)/\1/p" "$snmp_file" | tr -d \")
   ifOperStatus=$(sed -n -e "s/.1.3.6.1.2.1.2.2.1.8.${index} = .*: \(.*\)/\1/p" "$snmp_file")
+  vmVlan=$(sed -n -e "s/.1.3.6.1.4.1.9.9.68.1.2.2.1.2.${index} = .*: \(.*\)/\1/p" "$snmp_file")
   if [[ "$ifOperStatus" == *"down"* && "$ifDescr" != *"Stack"* && "$ifDescr" != *"Vlan"* ]]; then
     grep -w "$ifDescr" "$interface_file" >> "$interface_file"-latest
     if [ $? != 0 ]; then
-      printf "%s!%s\n" "$ifDescr" "$datestamp" >> "$interface_file"-latest
+      printf "%s!%s!%s\n" "$ifDescr" "$datestamp" "$vmVlan" >> "$interface_file"-latest
     fi
   fi
 done
@@ -99,7 +102,7 @@ notconnected_interfaces=`wc -l < "$interface_file"`
 # Print the contents of the gathered data in preferred format
 printf "%s %s %s %s %s\n" "$notconnected_interfaces" 'interfaces not connected' `date -d @"$datestamp" +'%Y-%m-%d %H:%M:%S'` "| 'Not connected interfaces'="$notconnected_interfaces""
 while read LINE; do
-  printf "%s\t%s %s\n" `echo "$LINE" | cut -d! -f1` $(( ($datestamp - `echo "$LINE" | cut -d! -f2`) / 86400 )) 'days' 
+  printf "%s\t%s %s \t %s\n" `echo "$LINE" | cut -d! -f1` $(( ($datestamp - `echo "$LINE" | cut -d! -f2`) / 86400 )) 'days' `echo "$LINE" | cut -d! -f3` 
 done < "$interface_file"
 exit 0
 

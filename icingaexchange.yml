@@ -9,12 +9,12 @@ type: Plugin
 license: Apache v2
 releases: 
   - 
-    name: 1.1
-    description: "1.1 Release"
+    name: 1.2
+    description: "1.2 Release"
     files: 
       - 
         name: check_ports_notconnect.sh
         url: "file:///check_ports_notconnect.sh"
         description: "Second public release"
-        checksum: b0e485d687cc7b9e3f0bf1fda2c90acd
+        checksum: 217880e525e43d9b3e2e81a6895ee30e 
 
