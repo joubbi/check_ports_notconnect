@@ -16,6 +16,7 @@
 # Apply the SNMP authentication information as variables to the service.                 #
 #                                                                                        #
 # Version history:                                                                       #
+# 1.1 2016-07-15  Fixed a critical bug.
 # 1.0 2016-06-16  Initial version.                                                       #
 #                                                                                        #
 # Licensed under the Apache license version 2.0                                          #
@@ -54,7 +55,7 @@ if [ $# != 2 ] && [ $# != 6 ]; then
 fi
 
 
-# Rread and store interface entries, exit on error.
+# Read and store interface entries, exit on error.
 $snmpwalk $snmpopt 1.3.6.1.2.1.2.2.1.1 > "$snmp_file"
 if [ "$?" != 0 ]; then
   echo "Something went wrong communicating with the SNMP agent on "$1"!"
@@ -77,7 +78,7 @@ fi
 indexes=$(sed -n -e "s/.1.3.6.1.2.1.2.2.1.1.\([0-9]\+\).*/\1/p" "$snmp_file")
 
 # Get the name and operational status of the interfaces, store interfaces that are down with the oldest timestamp.
-for index in "$indexes"; do
+for index in $indexes; do
   ifDescr=$(sed -n -e "s/.1.3.6.1.2.1.2.2.1.2.${index} = .*: \(.*\)/\1/p" "$snmp_file" | tr -d \")
   ifOperStatus=$(sed -n -e "s/.1.3.6.1.2.1.2.2.1.8.${index} = .*: \(.*\)/\1/p" "$snmp_file")
   if [[ "$ifOperStatus" == *"down"* && "$ifDescr" != *"Stack"* && "$ifDescr" != *"Vlan"* ]]; then
