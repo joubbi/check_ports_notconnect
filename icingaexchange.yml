@@ -2,9 +2,9 @@
 name: check_ports_notconnect
 description: "file:///README.md"
 url: "https://gitlab.com/faridj/check_ports_notconnect.git"
-tags: switch
+tags: switch, port, switchport
 vendor: Cisco
-target: Network
+target: Network, Snmp
 type: Plugin
 license: Apache v2
 releases: 
@@ -16,5 +16,5 @@ releases:
         name: check_ports_notconnect.sh
         url: "file:///check_ports_notconnect.sh"
         description: "Second public release"
-        checksum: 217880e525e43d9b3e2e81a6895ee30e 
+        checksum: 2124a0f11cf53e9e4110a5394355643e 
 

@@ -20,8 +20,8 @@
 # 1.1 2016-07-15  Fixed a critical bug.                                                  #
 # 1.0 2016-06-16  Initial version.                                                       #
 #                                                                                        #
-# Licensed under the Apache license version 2.0                                          #
-# Written by Farid.Joubbi@consign.se                                                     #
+# Licensed under the Apache License Version 2.0                                          #
+# Written by farid@joubbi.se                                                             #
 #                                                                                        #
 ##########################################################################################
 

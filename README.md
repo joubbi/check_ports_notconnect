@@ -43,13 +43,14 @@ I have tested this script with Cisco Catalyst 2960G, 2960-S, 2960-X and 3750G.
 It should however work with other models and brands.
 Let me know if you have a switch that supports SNMP and works or doesn't with this plugin.
 
-Licensed under the Apache license version 2.0
-Written by farid.joubbi@consign.se
+Licensed under the [__Apache License Version 2.0__](https://www.apache.org/licenses/LICENSE-2.0)
+
+Written by __farid@joubbi.se__
 
 ## Version history:
-1.2 2016-07-15  Added information about the VLAN on the not connected interface.
-1.1 2016-07-15  Fixed a critical bug.
-1.0 2016-06-15  Initial version.
+* 1.2 2016-07-15  Added information about the VLAN on the not connected interface.
+* 1.1 2016-07-15  Fixed a critical bug.
+* 1.0 2016-06-15  Initial version.
 
-* http://www.consign.se/monitoring/
+http://www.joubbi.se/monitoring.html
 
