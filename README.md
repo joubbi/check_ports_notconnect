@@ -46,7 +46,7 @@ It should however work with other models and brands.
 Let me know if you have a switch that supports SNMP and works or doesn't with this plugin.
 
 
-## Version history:
+## Version history
 * 1.2 2016-07-15  Added information about the VLAN on the not connected interface.
 * 1.1 2016-07-15  Fixed a critical bug.
 * 1.0 2016-06-15  Initial version.
